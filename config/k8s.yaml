@@ -1,0 +1,14 @@
+mongo:
+  uri: "mongodb://root:root@support-mongodb-sharded.mongo.svc.cluster.local:27017"
+  database: "admin"
+
+logger:
+  type: "default"
+  level: "info"
+  add_source: true
+  is_json: true
+  set_default: true
+
+mode: "RELEASE"
+
+grpc_port: 80

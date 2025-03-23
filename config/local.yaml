@@ -1,0 +1,33 @@
+mongo:
+  uri: "mongodb://localhost:27017"
+  database: "admin"
+
+http_server:
+  url: ":9090"
+  readTimeout: 5s
+  writeTimeout: 5s
+  shutdownTimeout: 5s
+
+logger:
+  type: "dev"
+  level: "debug"
+  add_source: true
+  is_json: true
+  set_default: true
+
+controller:
+  mode: "DEBUG"
+  v1:
+    swagger:
+      version: "1.0"
+      base_path: "/api/v1/"
+      host: "localhost:9090"
+      schemes:
+        - "http"
+      title: "Gateway"
+      description: "This is the API documentation for gateway API."
+
+usecase:
+  jwt:
+    issuer: "coffee-id-backend"
+    audience: ["coffee-id-frontend"]

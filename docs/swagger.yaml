@@ -1,0 +1,295 @@
+definitions:
+  dto.Message:
+    properties:
+      content:
+        type: string
+      is_read:
+        type: boolean
+      message_id:
+        type: string
+      sender_id:
+        type: integer
+      support_id:
+        type: integer
+      timestamp:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  dto.Support:
+    properties:
+      countChat:
+        type: integer
+      supportId:
+        type: integer
+    type: object
+  resp.JsonError:
+    properties:
+      error:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /support/admin/sup/add:
+    post:
+      consumes:
+      - application/json
+      description: Register new SUPPORT user (available for users with role "SUPER_ADMIN")
+      parameters:
+      - description: User ID
+        in: query
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "401":
+          description: Authorization header wasn`t found, Token is not bearer
+          schema:
+            $ref: '#/definitions/resp.JsonError'
+        "403":
+          description: This resource is forbidden
+          schema:
+            $ref: '#/definitions/resp.JsonError'
+        "500":
+          description: Something going wrong...
+          schema:
+            $ref: '#/definitions/resp.JsonError'
+      security:
+      - Bearer: []
+      summary: Add support
+      tags:
+      - Support
+  /support/admin/sup/all:
+    get:
+      consumes:
+      - application/json
+      description: Unregister SUPPORT user (available for users with role "SUPER_ADMIN")
+      parameters:
+      - description: Limit
+        in: query
+        name: limit
+        type: integer
+      - description: Offset
+        in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of supportss
+          schema:
+            items:
+              $ref: '#/definitions/dto.Support'
+            type: array
+        "400":
+          description: Invalid request params
+          schema:
+            $ref: '#/definitions/resp.JsonError'
+        "401":
+          description: Authorization header wasn`t found, Token is not bearer
+          schema:
+            $ref: '#/definitions/resp.JsonError'
+        "403":
+          description: This resource is forbidden
+          schema:
+            $ref: '#/definitions/resp.JsonError'
+        "500":
+          description: Something going wrong...
+          schema:
+            $ref: '#/definitions/resp.JsonError'
+      security:
+      - Bearer: []
+      summary: Get all supports
+      tags:
+      - Support
+  /support/admin/sup/remove:
+    delete:
+      consumes:
+      - application/json
+      description: Unregister SUPPORT user (available for users with role "SUPER_ADMIN")
+      parameters:
+      - description: User ID
+        in: query
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "401":
+          description: Authorization header wasn`t found, Token is not bearer
+          schema:
+            $ref: '#/definitions/resp.JsonError'
+        "403":
+          description: This resource is forbidden
+          schema:
+            $ref: '#/definitions/resp.JsonError'
+        "500":
+          description: Something going wrong...
+          schema:
+            $ref: '#/definitions/resp.JsonError'
+      security:
+      - Bearer: []
+      summary: Remove support
+      tags:
+      - Support
+  /support/history:
+    get:
+      consumes:
+      - application/json
+      description: Returns list of messages of chat
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful response with history
+          schema:
+            items:
+              $ref: '#/definitions/dto.Message'
+            type: array
+        "401":
+          description: Authorization header wasn`t found, Token is not bearer
+          schema:
+            $ref: '#/definitions/resp.JsonError'
+        "500":
+          description: Something going wrong...
+          schema:
+            $ref: '#/definitions/resp.JsonError'
+      security:
+      - Bearer: []
+      summary: History of chat
+      tags:
+      - Support
+  /support/s/chats/:
+    get:
+      consumes:
+      - application/json
+      description: Returns list of chats support must to answer (available for users
+        with role "SUPPORT")
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful response with chats
+          schema:
+            items:
+              type: integer
+            type: array
+        "401":
+          description: Authorization header wasn`t found, Token is not bearer
+          schema:
+            $ref: '#/definitions/resp.JsonError'
+        "403":
+          description: This resource is forbidden
+          schema:
+            $ref: '#/definitions/resp.JsonError'
+        "500":
+          description: Something going wrong...
+          schema:
+            $ref: '#/definitions/resp.JsonError'
+      security:
+      - Bearer: []
+      summary: Support chats
+      tags:
+      - Support
+  /support/s/chats/:id/history:
+    get:
+      consumes:
+      - application/json
+      description: Returns list of messages by userId (available for users with role
+        "SUPPORT")
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful response with history
+          schema:
+            items:
+              $ref: '#/definitions/dto.Message'
+            type: array
+        "401":
+          description: Authorization header wasn`t found, Token is not bearer
+          schema:
+            $ref: '#/definitions/resp.JsonError'
+        "403":
+          description: This resource is forbidden
+          schema:
+            $ref: '#/definitions/resp.JsonError'
+        "500":
+          description: Something going wrong...
+          schema:
+            $ref: '#/definitions/resp.JsonError'
+      security:
+      - Bearer: []
+      summary: History of chat (sup)
+      tags:
+      - Support
+  /support/s/chats/:id/ws:
+    get:
+      consumes:
+      - application/json
+      description: Upgrade connection to websockets (available for users with role
+        "SUPPORT")
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "401":
+          description: Authorization header wasn`t found, Token is not bearer
+          schema:
+            $ref: '#/definitions/resp.JsonError'
+        "403":
+          description: This resource is forbidden
+          schema:
+            $ref: '#/definitions/resp.JsonError'
+        "500":
+          description: Something going wrong...
+          schema:
+            $ref: '#/definitions/resp.JsonError'
+      security:
+      - Bearer: []
+      summary: Sup to support chat
+      tags:
+      - Support
+  /support/ws:
+    get:
+      consumes:
+      - application/json
+      description: Upgrade connection to websockets
+      produces:
+      - application/json
+      responses:
+        "401":
+          description: Authorization header wasn`t found, Token is not bearer
+          schema:
+            $ref: '#/definitions/resp.JsonError'
+        "500":
+          description: Something going wrong...
+          schema:
+            $ref: '#/definitions/resp.JsonError'
+      security:
+      - Bearer: []
+      summary: Connect to support
+      tags:
+      - Support
+securityDefinitions:
+  Bearer:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

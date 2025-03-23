@@ -1,0 +1,14 @@
+mongo:
+  uri: "mongodb://mongodb:27017"
+  database: "local"
+
+logger:
+  type: "dev"
+  level: "debug"
+  add_source: true
+  is_json: true
+  set_default: true
+
+mode: "DEBUG"
+
+grpc_port: 80
